@@ -1,0 +1,85 @@
+<html>
+
+<head>
+<title>Title</title>
+</head>
+
+<body>
+
+<!--begin.rcode
+
+library(tidyverse)
+library(leaflet)
+library(readxl)
+library(magrittr)
+library(reshape2)
+library(ggplot2)
+library(ggsci)
+```
+
+```{r}
+long <- c(-3.7837,13.7373,-9.1393,1.5209,77.209,5.8987)
+lat <- c(52.1307,51.0504,38.7223,41.5912,28.6139,51.9851)
+popup <- c("Supplier, Tetra Packaging BV, Wales United Kingdom","Supplier,3M bottles, Dresden Germany","Supplier, Orange Supplies BV, Lisbon Portugal","Supplier, Star Hoku, Catalonia Spain","Supplier, Lemon concentrate, New Delhi India","Distribution center, Arnhem")
+color <- c("gray","gray","gray","gray","gray","gray")
+group <-c("a","a","a","a","a","a")
+df_location <-data.frame(long,lat,popup,color,group)
+
+
+#put color on markers 
+df_colormarker <- df_location[1:6,]
+
+getColor <- function(df_colormarker) {
+  sapply(df_colormarker$long, function(long) {
+  if(long == 5.8987) {
+    "green"
+  }  else {
+    "red"
+  } })
+}
+
+icons <- awesomeIcons(
+  icon = 'ios-close',
+  iconColor = 'black',
+  library = 'ion',
+  markerColor = getColor(df_colormarker)
+)
+
+##Make a line to connect points
+my_map<- leaflet(df_colormarker) %>% addTiles() %>%
+  addAwesomeMarkers(~long, ~lat, icon=icons, label=~as.character(popup))
+long1 <- c(5.8987,77.209)
+lat1 <- c(51.9851,28.6139)
+df_location1 <-data.frame(long1,lat1)
+
+long2 <- c(5.8987,1.5209)
+lat2 <- c(51.9851,41.5912)
+df_location2 <-data.frame(long2,lat2)
+
+long3 <- c(5.8987,-9.1393)
+lat3 <- c(51.9851,38.7223)
+df_location3 <-data.frame(long3,lat3)
+
+long4 <- c(5.8987,13.7373)
+lat4 <- c(51.9851,51.0504)
+df_location4 <-data.frame(long4,lat4)
+
+long5 <- c(5.8987,-3.7837)
+lat5 <- c(51.9851,52.1307)
+df_location5 <-data.frame(long5,lat5)
+
+line_map<- leaflet(df_colormarker) %>% addTiles() %>%
+  addAwesomeMarkers(~long, ~lat, icon=icons, label=~as.character(popup)) %>% 
+  addPolylines(data = df_location1, lng = ~long1, lat = ~lat1,weight=5.364241)%>% 
+  addPolylines(data = df_location2, lng = ~long2, lat = ~lat2,weight=4.205565) %>%
+  addPolylines(data = df_location3, lng = ~long3, lat = ~lat3,weight=1.893636) %>% 
+  addPolylines(data = df_location4, lng = ~long4, lat = ~lat4,weight=3.931758) %>% 
+  addPolylines(data = df_location5, lng = ~long5, lat = ~lat5,weight=0.226458) 
+
+line_map
+end.rcode-->
+
+
+
+</body>
+</html>
